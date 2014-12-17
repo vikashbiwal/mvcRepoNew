@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="696d76945f7a4760883377de46b3de3b" Name="Diagram1">
+        <EntityTypeShape EntityType="HRMDBModel.tblDesignation" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HRMDBModel.tblEmployee" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="HRMDBModel.FK_tblEmployee_tblDesignation" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HRMDBModel.tblEmp" Width="1.5" PointX="8.0244987011069888" PointY="26.601621178258966" />
+        <EntityTypeShape EntityType="HRMDBModel.tblproject" Width="1.5" PointX="9.8518363450895237" PointY="7.40647977935452" />
+        <AssociationConnector Association="HRMDBModel.FK_tblproject_tblEmp" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

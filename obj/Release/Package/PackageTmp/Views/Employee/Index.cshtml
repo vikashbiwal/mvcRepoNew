@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var empId = 0;//variable for update, delete employee
+        bindDropDownList();
+        getEmployees();
+        $("#btnSave").click(function () {
+
+            AddEmployee();
+        });
+        $("#btnUpdate").click(function () {
+
+            updateEmployee();
+        });
+    });
+
+    function bindDropDownList() {
+        $.getJSON("/api/designation", null, function success(list) {
+            $.each(list, function (i, obj) {
+                $("#ddlDesignation").append("<option value='" + obj.ID + "'>" + obj.designation + "</option>")
+            });
+        }, function error() { })
+    }
+    function AddEmployee() {
+        var name = $("#txtName").val();
+        var address = $("#txtAddress").val();
+        var salary = $("#txtSalary").val();
+        var desgId = $("#ddlDesignation").val();
+        var designationText = $("#ddlDesignation").find(":selected").text();
+
+        var Employee = {
+            Name: name,
+            Address: address,
+            GrossSalary: salary,
+            designation: { Id: desgId, designation: designationText }
+        };
+
+        $.ajax({
+            url: "/api/EmployeeApi/PostEmployee/",
+            type: "POST",
+            data: JSON.stringify(Employee),
+            contentType: 'application/json; charset=utf-8',
+
+            success: function (data) {
+                $("#tblEmpContent tbody").append("<tr><td>" + Employee.Name + "</td><td>" + Employee.Address + "</td><td>" + Employee.GrossSalary + "</td><td>" + Employee.designation.designation + "</td><td><span class='editButton'>Edit</span> <span class='deleteButton'>Delete</span></td></tr>");
+                $("#txtName").val("");
+                $("#txtAddress").val("");
+                $("#txtSalary").val("");
+                $("#ddlDesignation").val(0);
+            },
+            error: function (e) { }
+        });
+    }
+
+    function updateEmployee() {
+
+        var name = $("#txtName").val();
+        var address = $("#txtAddress").val();
+        var salary = $("#txtSalary").val();
+        var desgId = $("#ddlDesignation").val();
+        var designationText = $("#ddlDesignation").find(":selected").text();
+
+        var Employee = {
+            Name: name,
+            Address: address,
+            GrossSalary: salary,
+            designation: { Id: desgId, designation: designationText }
+        };
+
+        $.ajax({
+            url: "/api/EmployeeApi/" + empId,
+            type: "PUT",
+            data: JSON.stringify(Employee),
+            contentType: 'application/json; charset=utf-8',
+
+            success: function (data) {
+                $("#txtName").val("");
+                $("#txtAddress").val("");
+                $("#txtSalary").val("");
+                $("#ddlDesignation").val(0);
+                getEmployees();
+            },
+            error: function (e) { }
+        });
+    }
+
+    function getEmployees() {
+        $.getJSON("/api/EmployeeApi/Employees/", null, function success(list) {
+            $("#tblEmpContent tbody").empty();//.append("<tr><th>Name</th><th>Address</th><th>Salary</th><th>Designation</th></tr>");
+
+            $.each(list, function (key, emp) {
+
+                var row = "<tr><td>" + emp.Name + "</td><td>" + emp.Address + "</td><td>" + emp.GrossSalary + "</td><td>" + emp.designation.designation + "</td><td><span id='" + emp.ID + "' class='editButton'>Edit</span> <span class='deleteButton'>Delete</span></td></tr>";
+                $("#tblEmpContent tbody").append(row);
+            });
+        }, function error(e) { });
+    }
+    //edit button event
+    $('body').on('click', 'span.editButton', function () {
+        var id = $(this).attr("id");
+        empId = id;
+        alert(empId);
+        $.ajax({
+            url: "/api/EmployeeApi/" + id,
+            type: "Get",
+
+            success: function (data) {
+                $("#txtName").val(data.Name);
+                $("#txtAddress").val(data.Address);
+                $("#txtSalary").val(data.GrossSalary);
+                $("#ddlDesignation").val(data.designation.ID);
+                $("#btnSave").css("display", "none");
+                $("#btnUpdate").css("display", "block");
+            },
+            error: function (e) { }
+        });
+
+    });
+    $('body').on('click', 'span.deleteButton', function () {
+        var confimResult = confirm("Are you sure ! want to delete this record ?");
+        if (confimResult) {
+            var eid = $(this).parent("td").find(".editButton").attr("id");
+
+            $.ajax({
+                url: "/api/EmployeeApi/deleteEmployee/" + eid,
+                type: "Delete",
+                success: function (message) {
+
+                    getEmployees();
+                }
+            });
+        } else {
+
+        }
+    });
+</script>
+<h2>Index</h2>
+<table style="margin-left: 27em">
+    <tr>
+        <td style="height: 300px">
+            <table style="margin-top: -100px;">
+                <tr>
+                    <th colspan="2">Employee Registration Form</th>
+                </tr>
+                <tr>
+                    <td>Designation :</td>
+                    <td>
+                        <select id="ddlDesignation">
+                            <option>Select</option>
+
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>Name :</td>
+                    <td>
+                        <input id="txtName" type="text" style="width: 132px" /></td>
+                </tr>
+                <tr>
+                    <td>Address :</td>
+                    <td>
+                        <input id="txtAddress" type="text" style="width: 132px" /></td>
+                </tr>
+                <tr>
+                    <td>Salary :</td>
+                    <td>
+                        <input id="txtSalary" type="text" style="width: 132px" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="btnSave" type="submit" value="Save" /></td>
+                    <td>
+                        <input id="btnUpdate" type="submit" value="Update" style="display: none;" /></td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="margin-top: -100px; width: 80%;">
+                <tr>
+                    <th style="text-align: center;">Name</th>
+                    <th style="text-align: center">Address</th>
+                    <th style="text-align: center">Salary</th>
+                    <th style="text-align: center">Designation</th>
+                    <th style="text-align: center">&nbsp;</th>
+                </tr>
+
+
+
+            </table>
+            <div style="height: 200px; overflow: scroll; overflow-style: scrollbar; width: 100%;">
+                <table id="tblEmpContent">
+                    <tbody></tbody>
+
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+

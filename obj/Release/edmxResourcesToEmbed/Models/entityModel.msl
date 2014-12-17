@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HRMDBModelStoreContainer" CdmEntityContainer="HRMDBEntities">
+    <EntitySetMapping Name="tblDesignations">
+      <EntityTypeMapping TypeName="HRMDBModel.tblDesignation">
+        <MappingFragment StoreEntitySet="tblDesignation">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblEmployees">
+      <EntityTypeMapping TypeName="HRMDBModel.tblEmployee">
+        <MappingFragment StoreEntitySet="tblEmployee">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="grossSalary" ColumnName="grossSalary" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

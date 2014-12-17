@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HRMDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="HRMDBEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="tblDesignations" EntityType="HRMDBModel.tblDesignation" />
+    <EntitySet Name="tblEmployees" EntityType="HRMDBModel.tblEmployee" />
+    <AssociationSet Name="FK_tblEmployee_tblDesignation" Association="HRMDBModel.FK_tblEmployee_tblDesignation">
+      <End Role="tblDesignation" EntitySet="tblDesignations" />
+      <End Role="tblEmployee" EntitySet="tblEmployees" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblDesignation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="designation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="tblEmployees" Relationship="HRMDBModel.FK_tblEmployee_tblDesignation" FromRole="tblDesignation" ToRole="tblEmployee" />
+  </EntityType>
+  <EntityType Name="tblEmployee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="address" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="grossSalary" Type="Int32" />
+    <Property Name="designation" Type="Int32" />
+    <NavigationProperty Name="tblDesignation" Relationship="HRMDBModel.FK_tblEmployee_tblDesignation" FromRole="tblEmployee" ToRole="tblDesignation" />
+  </EntityType>
+  <Association Name="FK_tblEmployee_tblDesignation">
+    <End Role="tblDesignation" Type="HRMDBModel.tblDesignation" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblEmployee" Type="HRMDBModel.tblEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblDesignation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblEmployee">
+        <PropertyRef Name="designation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

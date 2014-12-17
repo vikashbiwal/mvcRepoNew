@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HRMDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="HRMDBModelStoreContainer">
+    <EntitySet Name="tblDesignation" EntityType="HRMDBModel.Store.tblDesignation" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tblEmp" EntityType="HRMDBModel.Store.tblEmp" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tblEmployee" EntityType="HRMDBModel.Store.tblEmployee" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tblproject" EntityType="HRMDBModel.Store.tblproject" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_tblEmployee_tblDesignation" Association="HRMDBModel.Store.FK_tblEmployee_tblDesignation">
+      <End Role="tblDesignation" EntitySet="tblDesignation" />
+      <End Role="tblEmployee" EntitySet="tblEmployee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblproject_tblEmp" Association="HRMDBModel.Store.FK_tblproject_tblEmp">
+      <End Role="tblEmp" EntitySet="tblEmp" />
+      <End Role="tblproject" EntitySet="tblproject" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblDesignation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="designation" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblEmp">
+    <Key>
+      <PropertyRef Name="empid" />
+    </Key>
+    <Property Name="empid" Type="int" Nullable="false" />
+    <Property Name="empname" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblEmployee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="address" Type="varchar" MaxLength="50" />
+    <Property Name="grossSalary" Type="int" />
+    <Property Name="designation" Type="int" />
+    <Property Name="empImage" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblproject">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="proName" Type="varchar" MaxLength="50" />
+    <Property Name="eid" Type="int" />
+  </EntityType>
+  <Association Name="FK_tblEmployee_tblDesignation">
+    <End Role="tblDesignation" Type="HRMDBModel.Store.tblDesignation" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblEmployee" Type="HRMDBModel.Store.tblEmployee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblDesignation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblEmployee">
+        <PropertyRef Name="designation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblproject_tblEmp">
+    <End Role="tblEmp" Type="HRMDBModel.Store.tblEmp" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblproject" Type="HRMDBModel.Store.tblproject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblEmp">
+        <PropertyRef Name="empid" />
+      </Principal>
+      <Dependent Role="tblproject">
+        <PropertyRef Name="eid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

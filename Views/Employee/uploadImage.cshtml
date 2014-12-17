@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "uploadImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        getEmployees();
+        $('#btnUploadFile').on('click', function () {
+           
+            var data = new FormData();
+           
+            var files = $("#fileUpload").get(0).files;
+           
+            // Add the uploaded image content to the form data collection
+            if (files.length > 0) {
+                data.append("UploadedImage", files[0]);
+            }
+            var empid = $("#ddlEmp").val();
+            // Make Ajax request with the contentType = false, and procesDate = false
+             $.ajax({
+                type: "PUT",
+                url: "/api/EmployeeApi/UploadFile/"+empid,
+                contentType: false,
+                processData: false,
+                data: data,
+
+            });
+
+           
+        });
+    });
+    function getEmployees() {
+        $.getJSON("/api/EmployeeApi/Employees/", null, function success(list) {
+            $.each(list, function (key, emp) {
+                $("#ddlEmp").append("<option value='" + emp.ID + "'>" + emp.Name + "</option>")
+            });
+        }, function error(e) { });
+    }
+</script>
+<h2>uploadImage</h2>
+<form>
+<div>
+    Employee :&nbsp&nbsp&nbsp&nbsp <select id="ddlEmp"></select><br />
+    Select Photo: <input id="fileUpload" type="file" />
+    
+    <br />
+<input id="btnUploadFile" type="button" value="Upload File" /></div>
+    </form>

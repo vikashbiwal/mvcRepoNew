@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HRMDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="HRMDBModelStoreContainer">
+          <EntitySet Name="tblDesignation" EntityType="HRMDBModel.Store.tblDesignation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblEmp" EntityType="HRMDBModel.Store.tblEmp" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblEmployee" EntityType="HRMDBModel.Store.tblEmployee" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tblproject" EntityType="HRMDBModel.Store.tblproject" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_tblEmployee_tblDesignation" Association="HRMDBModel.Store.FK_tblEmployee_tblDesignation">
+            <End Role="tblDesignation" EntitySet="tblDesignation" />
+            <End Role="tblEmployee" EntitySet="tblEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblproject_tblEmp" Association="HRMDBModel.Store.FK_tblproject_tblEmp">
+            <End Role="tblEmp" EntitySet="tblEmp" />
+            <End Role="tblproject" EntitySet="tblproject" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblDesignation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="designation" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblEmp">
+          <Key>
+            <PropertyRef Name="empid" />
+          </Key>
+          <Property Name="empid" Type="int" Nullable="false" />
+          <Property Name="empname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="grossSalary" Type="int" />
+          <Property Name="designation" Type="int" />
+          <Property Name="empImage" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblproject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="proName" Type="varchar" MaxLength="50" />
+          <Property Name="eid" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblEmployee_tblDesignation">
+          <End Role="tblDesignation" Type="HRMDBModel.Store.tblDesignation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblEmployee" Type="HRMDBModel.Store.tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDesignation">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="designation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblproject_tblEmp">
+          <End Role="tblEmp" Type="HRMDBModel.Store.tblEmp" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblproject" Type="HRMDBModel.Store.tblproject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmp">
+              <PropertyRef Name="empid" />
+            </Principal>
+            <Dependent Role="tblproject">
+              <PropertyRef Name="eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HRMDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HRMDBEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDesignations" EntityType="HRMDBModel.tblDesignation" />
+          <EntitySet Name="tblEmployees" EntityType="HRMDBModel.tblEmployee" />
+          <AssociationSet Name="FK_tblEmployee_tblDesignation" Association="HRMDBModel.FK_tblEmployee_tblDesignation">
+            <End Role="tblDesignation" EntitySet="tblDesignations" />
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <EntitySet Name="tblEmps" EntityType="HRMDBModel.tblEmp" />
+          <EntitySet Name="tblprojects" EntityType="HRMDBModel.tblproject" />
+          <AssociationSet Name="FK_tblproject_tblEmp" Association="HRMDBModel.FK_tblproject_tblEmp">
+            <End Role="tblEmp" EntitySet="tblEmps" />
+            <End Role="tblproject" EntitySet="tblprojects" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblDesignation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="designation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tblEmployees" Relationship="HRMDBModel.FK_tblEmployee_tblDesignation" FromRole="tblDesignation" ToRole="tblEmployee" />
+        </EntityType>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="address" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="grossSalary" Type="Int32" />
+          <Property Name="designation" Type="Int32" />
+          <NavigationProperty Name="tblDesignation" Relationship="HRMDBModel.FK_tblEmployee_tblDesignation" FromRole="tblEmployee" ToRole="tblDesignation" />
+          <Property Type="String" Name="empImage" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_tblEmployee_tblDesignation">
+          <End Role="tblDesignation" Type="HRMDBModel.tblDesignation" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblEmployee" Type="HRMDBModel.tblEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDesignation">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblEmployee">
+              <PropertyRef Name="designation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblEmp">
+          <Key>
+            <PropertyRef Name="empid" />
+          </Key>
+          <Property Type="Int32" Name="empid" Nullable="false" />
+          <Property Type="String" Name="empname" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblprojects" Relationship="HRMDBModel.FK_tblproject_tblEmp" FromRole="tblEmp" ToRole="tblproject" />
+        </EntityType>
+        <EntityType Name="tblproject">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="proName" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="eid" />
+          <NavigationProperty Name="tblEmp" Relationship="HRMDBModel.FK_tblproject_tblEmp" FromRole="tblproject" ToRole="tblEmp" />
+        </EntityType>
+        <Association Name="FK_tblproject_tblEmp">
+          <End Type="HRMDBModel.tblEmp" Role="tblEmp" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="HRMDBModel.tblproject" Role="tblproject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmp">
+              <PropertyRef Name="empid" />
+            </Principal>
+            <Dependent Role="tblproject">
+              <PropertyRef Name="eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HRMDBModelStoreContainer" CdmEntityContainer="HRMDBEntities">
+          <EntitySetMapping Name="tblDesignations">
+            <EntityTypeMapping TypeName="HRMDBModel.tblDesignation">
+              <MappingFragment StoreEntitySet="tblDesignation">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmployees">
+            <EntityTypeMapping TypeName="HRMDBModel.tblEmployee">
+              <MappingFragment StoreEntitySet="tblEmployee">
+                <ScalarProperty Name="empImage" ColumnName="empImage" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="grossSalary" ColumnName="grossSalary" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmps">
+            <EntityTypeMapping TypeName="HRMDBModel.tblEmp">
+              <MappingFragment StoreEntitySet="tblEmp">
+                <ScalarProperty Name="empname" ColumnName="empname" />
+                <ScalarProperty Name="empid" ColumnName="empid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblprojects">
+            <EntityTypeMapping TypeName="HRMDBModel.tblproject">
+              <MappingFragment StoreEntitySet="tblproject">
+                <ScalarProperty Name="eid" ColumnName="eid" />
+                <ScalarProperty Name="proName" ColumnName="proName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
